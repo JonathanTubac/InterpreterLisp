@@ -1,6 +1,7 @@
 package uvg.edu;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AstNode {
 
@@ -28,9 +29,10 @@ public class AstNode {
 
     @Override
     public String toString() {
-        return "AstNode{" +
-                "type=" + type +
-                ", value=" + value +
-                '}';
+        if (type == Type.LIST) {
+            List<AstNode> list = (List<AstNode>) value;
+            return "(" + list.stream().map(AstNode::toString).collect(Collectors.joining(" ")) + ")";
+        }
+        return value.toString();
     }
 }

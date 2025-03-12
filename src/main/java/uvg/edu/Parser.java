@@ -8,7 +8,7 @@ import java.util.List;
 public class Parser {
 
     /**
-     * Parsea la entrada en una lista de expresiones.
+     * Parsea la entrada en una lista de expresiones (AST).
      */
     public List<AstNode> parse(String input) {
         List<String> tokens = tokenize(input);
@@ -28,7 +28,9 @@ public class Parser {
         return new ArrayList<>(Arrays.asList(split));
     }
 
-    
+    /**
+     * Construye recursivamente un AstNode a partir de los tokens.
+     */
     private AstNode readFromTokens(List<String> tokens) {
         if (tokens.isEmpty()) {
             throw new RuntimeException("Fin de tokens inesperado");

@@ -12,8 +12,7 @@ public class Evaluator {
                 return new AstNode(AstNode.Type.NUMBER, node.getValue());
 
             case SYMBOL:
-                throw new RuntimeException("Símbolo no soportado en esta entrega: " + node.getValue());
-
+                //
             case LIST:
                 List<AstNode> list = castToList(node.getValue());
                 if (list.isEmpty()) {
@@ -47,13 +46,13 @@ public class Evaluator {
     private AstNode applyBuiltInFunction(String operator, List<Integer> operands) {
         switch (operator) {
             case "+":
-                return BuiltInFunctions.add(operands);
+                return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.add(operands));
             case "-":
-                return BuiltInFunctions.subtract(operands);
+                return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.subtract(operands));
             case "*":
-                return BuiltInFunctions.multiply(operands);
+                return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.multiply(operands));
             case "/":
-                return BuiltInFunctions.divide(operands);
+                return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.divide(operands));
             default:
                 throw new RuntimeException("Operador no soportado: " + operator);
         }
