@@ -1,25 +1,58 @@
 package uvg.edu;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Parser {
+
+    /**
+     * Parsea la entrada en una lista de expresiones.
+     */
     public List<AstNode> parse(String input) {
-        // Implementación del análisis sintáctico
-        return null;
+        List<String> tokens = tokenize(input);
+        List<AstNode> expressions = new ArrayList<>();
+        while (!tokens.isEmpty()) {
+            expressions.add(readFromTokens(tokens));
+        }
+        return expressions;
     }
 
-    public List<String> tokenize(String input) {
-        // Tokeniza la entrada
-        return null;
+    /**
+     * Separa la entrada en tokens.
+     */
+    private List<String> tokenize(String input) {
+        input = input.replace("(", " ( ").replace(")", " ) ");
+        String[] split = input.trim().split("\\s+");
+        return new ArrayList<>(Arrays.asList(split));
     }
 
-    public AstNode readFromTokens(List<String> tokens) {
-        // Lee y genera nodos AST desde los tokens
-        return null;
-    }
-
-    public AstNode atom(String token) {
-        // Convierte un token en un nodo AST
-        return null;
+    
+    private AstNode readFromTokens(List<String> tokens) {
+        if (tokens.isEmpty()) {
+            throw new RuntimeException("Fin de tokens inesperado");
+        }
+        String token = tokens.remove(0);
+        if ("(".equals(token)) {
+            List<AstNode> list = new ArrayList<>();
+            while (!tokens.isEmpty() && !")".equals(tokens.get(0))) {
+                list.add(readFromTokens(tokens));
+            }
+            if (tokens.isEmpty()) {
+                throw new RuntimeException("Falta un paréntesis de cierre ')'");
+            }
+            tokens.remove(0); // Remover ")"
+            return new AstNode(AstNode.Type.LIST, list);
+        } else if (")".equals(token)) {
+            throw new RuntimeException("Paréntesis de cierre inesperado");
+        } else {
+            try {
+                int value = Integer.parseInt(token);
+                return new AstNode(AstNode.Type.NUMBER, value);
+            } catch (NumberFormatException e) {
+                return new AstNode(AstNode.Type.SYMBOL, token);
+            }
+        }
     }
 }
