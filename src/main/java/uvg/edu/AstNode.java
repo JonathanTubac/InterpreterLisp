@@ -3,29 +3,34 @@ package uvg.edu;
 import java.util.List;
 
 public class AstNode {
-    public enum Type { NUMBER, SYMBOL, LIST }
+
+    public enum Type {
+        NUMBER,
+        SYMBOL,
+        LIST
+    }
+
+    private Type type;
+    private Object value;
+
+    public AstNode(Type type, Object value) {
+        this.type = type;
+        this.value = value;
+    }
 
     public Type getType() {
-        return null;
+        return type;
     }
 
     public Object getValue() {
-        return null;
+        return value;
     }
 
-    public Integer getNumber() {
-        return null;
-    }
-
-    public String getSymbol() {
-        return null;
-    }
-
-    public List<AstNode> getList() {
-        return null;
-    }
-
+    @Override
     public String toString() {
-        return null;
+        return "AstNode{" +
+                "type=" + type +
+                ", value=" + value +
+                '}';
     }
 }
