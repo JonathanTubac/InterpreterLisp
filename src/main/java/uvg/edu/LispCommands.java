@@ -89,6 +89,15 @@ public class LispCommands {
         return value;
     }
 
+    private static Object handlePrint(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
+        if (argNodes.size() != 1) {
+            throw new RuntimeException("print espera 1 argumento");
+        }
+        Object value = evaluator.eval(argNodes.get(0), env);
+        System.out.println(value);
+        return value;
+    }
+    
     @SuppressWarnings("unchecked")
     private static List<AstNode> castToList(Object value) {
         return (List<AstNode>) value;
