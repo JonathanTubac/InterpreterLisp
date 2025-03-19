@@ -89,6 +89,35 @@ public class LispCommands {
         return value;
     }
 
+    private static Object handlePrint(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
+        if (argNodes.size() != 1) {
+            throw new RuntimeException("print espera 1 argumento");
+        }
+        Object value = evaluator.eval(argNodes.get(0), env);
+        System.out.println(value);
+        return value;
+    }
+
+    private static Object handleCond(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
+        for (AstNode clause : argNodes) {
+            if (clause.getType() != AstNode.Type.LIST) {
+                throw new RuntimeException("Cada cláusula de cond debe ser una lista");
+            }
+            List<AstNode> clauseElements = castToList(clause.getValue());
+            if (clauseElements.isEmpty()) {
+                throw new RuntimeException("Cláusula cond vacía");
+            }
+            Object condition = evaluator.eval(clauseElements.get(0), env);
+            if (condition != null && !condition.equals(false)) {
+                if (clauseElements.size() == 1) {
+                    return condition;
+                } else {
+                    return evaluator.eval(clauseElements.get(1), env);
+                }
+            }
+        }
+        return null;
+    }
     @SuppressWarnings("unchecked")
     private static List<AstNode> castToList(Object value) {
         return (List<AstNode>) value;
