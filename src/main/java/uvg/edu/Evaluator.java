@@ -26,7 +26,12 @@ public class Evaluator {
             case SYMBOL:
                 String symbol = (String) node.getValue();
                 if (env.containsKey(symbol)) {
-                    return new AstNode(AstNode.Type.NUMBER, env.get(symbol));
+                    Object value = env.get(symbol);
+                    if (value instanceof FunctionDefinition) {
+                        return new AstNode(AstNode.Type.SYMBOL, symbol);
+                    } else {
+                        return new AstNode(AstNode.Type.NUMBER, value);
+                    }
                 } else {
                     throw new RuntimeException("Símbolo no definido: " + symbol);
                 }
@@ -44,9 +49,27 @@ public class Evaluator {
                 }
                 String operator = (String) first.getValue();
                 
-                // Manejo de comandos especiales como setq
-                if (operator.equals("setq")) {
+                // Manejo de comandos especiales como setq, print, cond, defun
+                if (operator.equals("setq") || operator.equals("print") || operator.equals("cond") || operator.equals("defun")) {
                     return new AstNode(AstNode.Type.NUMBER, LispCommands.evaluateCommand(operator, list.subList(1, list.size()), this, env));
+                }
+
+                // Manejo de funciones definidas por el usuario
+                if (env.containsKey(operator) && env.get(operator) instanceof FunctionDefinition) {
+                    FunctionDefinition funcDef = (FunctionDefinition) env.get(operator);
+                    List<String> parameters = funcDef.getParameters();
+                    AstNode body = funcDef.getBody();
+                    Map<String, Object> closure = new HashMap<>(funcDef.getClosure());
+
+                    if (list.size() - 1 != parameters.size()) {
+                        throw new RuntimeException("Número incorrecto de argumentos para la función: " + operator);
+                    }
+
+                    for (int i = 0; i < parameters.size(); i++) {
+                        closure.put(parameters.get(i), eval(list.get(i + 1), env).getValue());
+                    }
+
+                    return eval(body, closure);
                 }
 
                 // Se evalúan los argumentos
