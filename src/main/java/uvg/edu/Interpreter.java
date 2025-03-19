@@ -18,10 +18,7 @@ public class Interpreter {
 
             Evaluator evaluator = new Evaluator();
             for (AstNode expr : astList) {
-                AstNode result = evaluator.eval(expr);
-                System.out.println("Expresión: " + expr);
-                System.out.println("Resultado: " + result.getValue());
-                System.out.println();
+                evaluator.eval(expr);
             }
 
         } catch (IOException e) {

@@ -57,4 +57,64 @@ public class BuiltInFunctions {
         }
         return result;
     }
+
+    /**
+     * Compara si todos los operandos son iguales.
+     */
+    public static boolean equals(List<Integer> operands) {
+        if (operands.isEmpty()) {
+            throw new RuntimeException("La operación '=' espera al menos un operando");
+        }
+        int first = operands.get(0);
+        for (int op : operands) {
+            if (op != first) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Compara si el primer operando es menor que el segundo.
+     */
+    public static boolean lessThan(List<Integer> operands) {
+        if (operands.size() != 2) {
+            throw new RuntimeException("La operación '<' espera exactamente dos operandos");
+        }
+        return operands.get(0) < operands.get(1);
+    }
+
+    /**
+     * Compara si el primer operando es mayor que el segundo.
+     */
+    public static boolean greaterThan(List<Integer> operands) {
+        if (operands.size() != 2) {
+            throw new RuntimeException("La operación '>' espera exactamente dos operandos");
+        }
+        return operands.get(0) > operands.get(1);
+    }
+
+    /**
+     * Realiza una operación lógica AND sobre todos los operandos.
+     */
+    public static boolean and(List<Boolean> operands) {
+        for (boolean op : operands) {
+            if (!op) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Realiza una operación lógica OR sobre todos los operandos.
+     */
+    public static boolean or(List<Boolean> operands) {
+        for (boolean op : operands) {
+            if (op) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

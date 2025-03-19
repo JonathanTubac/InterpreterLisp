@@ -1,6 +1,5 @@
 package uvg.edu;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +25,10 @@ public class LispCommands {
                 return handleDefun(argNodes, env);
             case "setq":
                 return handleSetq(argNodes, evaluator, env);
+            case "print":
+                return handlePrint(argNodes, evaluator, env);
+            case "cond":
+                return handleCond(argNodes, evaluator, env);
             default:
                 throw new RuntimeException("Comando desconocido: " + command);
         }
@@ -82,22 +85,28 @@ public class LispCommands {
         }
         String varName = (String) varNode.getValue();
         // Evaluamos el valor en el entorno actual
-        Object value = evaluator.eval(argNodes.get(1), env);
+        Object value = evaluator.eval(argNodes.get(1), env).getValue();
 
         // Asignamos en el entorno
         env.put(varName, value);
         return value;
     }
 
+    /**
+     * (print expr)
+     */
     private static Object handlePrint(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
         if (argNodes.size() != 1) {
             throw new RuntimeException("print espera 1 argumento");
         }
-        Object value = evaluator.eval(argNodes.get(0), env);
+        Object value = evaluator.eval(argNodes.get(0), env).getValue();
         System.out.println(value);
         return value;
     }
 
+    /**
+     * (cond (cond1 expr1) (cond2 expr2) ...)
+     */
     private static Object handleCond(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
         for (AstNode clause : argNodes) {
             if (clause.getType() != AstNode.Type.LIST) {
@@ -107,17 +116,18 @@ public class LispCommands {
             if (clauseElements.isEmpty()) {
                 throw new RuntimeException("Cláusula cond vacía");
             }
-            Object condition = evaluator.eval(clauseElements.get(0), env);
+            Object condition = evaluator.eval(clauseElements.get(0), env).getValue();
             if (condition != null && !condition.equals(false)) {
                 if (clauseElements.size() == 1) {
                     return condition;
                 } else {
-                    return evaluator.eval(clauseElements.get(1), env);
+                    return evaluator.eval(clauseElements.get(1), env).getValue();
                 }
             }
         }
         return null;
     }
+
     @SuppressWarnings("unchecked")
     private static List<AstNode> castToList(Object value) {
         return (List<AstNode>) value;
