@@ -29,12 +29,19 @@ public class Evaluator {
                     Object value = env.get(symbol);
                     if (value instanceof FunctionDefinition) {
                         return new AstNode(AstNode.Type.SYMBOL, symbol);
-                    } else {
+                    } else if (value instanceof Integer) {
                         return new AstNode(AstNode.Type.NUMBER, value);
+                    } else if (value instanceof String) {
+                        return new AstNode(AstNode.Type.STRING, value);
+                    } else {
+                        throw new RuntimeException("Tipo de valor no soportado: " + value);
                     }
                 } else {
                     throw new RuntimeException("Símbolo no definido: " + symbol);
                 }
+
+            case STRING:
+                return new AstNode(AstNode.Type.STRING, node.getValue());
 
             case LIST:
                 List<AstNode> list = castToList(node.getValue());

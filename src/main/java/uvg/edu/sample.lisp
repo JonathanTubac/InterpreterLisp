@@ -21,11 +21,11 @@
 
 (defun clasificar-numero (x)
   (cond
-    ((> x 0) 2)
-    ((< x 0) 1)
-    (t "Cero")))
+    ((> x 0) "positivo")
+    ((< x 0) "negativo")
+    ( "Cero")))
 
-(print (clasificar-numero negativo))
-
-(setq nombre "Juan")
+(print (clasificar-numero (+ negativo 3) ))
+(print(- 3 10))
+(setq nombre "Diego")
 (print nombre) 

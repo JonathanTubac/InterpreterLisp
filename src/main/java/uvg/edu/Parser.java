@@ -1,6 +1,5 @@
 package uvg.edu;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +47,8 @@ public class Parser {
             return new AstNode(AstNode.Type.LIST, list);
         } else if (")".equals(token)) {
             throw new RuntimeException("Paréntesis de cierre inesperado");
+        } else if (token.startsWith("\"") && token.endsWith("\"")) {
+            return new AstNode(AstNode.Type.STRING, token.substring(1, token.length() - 1));
         } else {
             try {
                 int value = Integer.parseInt(token);

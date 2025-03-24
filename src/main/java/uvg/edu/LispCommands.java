@@ -112,12 +112,19 @@ public class LispCommands {
             if (clause.getType() != AstNode.Type.LIST) {
                 throw new RuntimeException("Cada cláusula de cond debe ser una lista");
             }
+    
             List<AstNode> clauseElements = castToList(clause.getValue());
             if (clauseElements.isEmpty()) {
                 throw new RuntimeException("Cláusula cond vacía");
             }
+    
+            // Evaluar la condición correctamente
             Object condition = evaluator.eval(clauseElements.get(0), env).getValue();
-            if (condition != null && !condition.equals(false)) {
+            
+            // Considerar que en Lisp cualquier valor distinto de NIL (o false) es verdadero
+            boolean isTrue = !(condition == null || condition.equals(false) || condition.equals("false") || condition.equals(0));
+    
+            if (isTrue) {
                 if (clauseElements.size() == 1) {
                     return condition;
                 } else {
@@ -127,6 +134,7 @@ public class LispCommands {
         }
         return null;
     }
+    
 
     @SuppressWarnings("unchecked")
     private static List<AstNode> castToList(Object value) {
