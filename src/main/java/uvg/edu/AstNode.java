@@ -8,6 +8,7 @@ public class AstNode {
     public enum Type {
         NUMBER,
         SYMBOL,
+        STRING,
         LIST
     }
 

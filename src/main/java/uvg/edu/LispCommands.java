@@ -16,10 +16,10 @@ public class LispCommands {
      * @param evaluator Instancia del Evaluator para evaluar subexpresiones.
      * @param env Entorno actual donde se definen variables y funciones.
      */
-    public static Object evaluateCommand(String command,
-                                         List<AstNode> argNodes,
-                                         Evaluator evaluator,
-                                         Map<String, Object> env) {
+    public static AstNode evaluateCommand(String command,
+                                          List<AstNode> argNodes,
+                                          Evaluator evaluator,
+                                          Map<String, Object> env) {
         switch (command) {
             case "defun":
                 return handleDefun(argNodes, env);
@@ -37,7 +37,7 @@ public class LispCommands {
     /**
      * (defun nombre (param1 param2 ...) cuerpo)
      */
-    private static Object handleDefun(List<AstNode> argNodes, Map<String, Object> env) {
+    private static AstNode handleDefun(List<AstNode> argNodes, Map<String, Object> env) {
         if (argNodes.size() != 3) {
             throw new RuntimeException("defun espera 3 argumentos: nombre, lista de parámetros y cuerpo");
         }
@@ -69,13 +69,13 @@ public class LispCommands {
         FunctionDefinition funcDef = new FunctionDefinition(parameters, bodyNode, new HashMap<>(env));
         env.put(functionName, funcDef);
 
-        return functionName;  // Podemos retornar el nombre de la función o la misma definición
+        return new AstNode(AstNode.Type.SYMBOL, functionName);  // Podemos retornar el nombre de la función o la misma definición
     }
 
     /**
      * (setq var valor)
      */
-    private static Object handleSetq(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
+    private static AstNode handleSetq(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
         if (argNodes.size() != 2) {
             throw new RuntimeException("setq espera 2 argumentos: variable y valor");
         }
@@ -89,44 +89,52 @@ public class LispCommands {
 
         // Asignamos en el entorno
         env.put(varName, value);
-        return value;
+        return new AstNode(AstNode.Type.SYMBOL, varName);
     }
 
     /**
      * (print expr)
      */
-    private static Object handlePrint(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
+    private static AstNode handlePrint(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
         if (argNodes.size() != 1) {
             throw new RuntimeException("print espera 1 argumento");
         }
         Object value = evaluator.eval(argNodes.get(0), env).getValue();
         System.out.println(value);
-        return value;
+        return new AstNode(AstNode.Type.STRING, value.toString());
     }
 
     /**
      * (cond (cond1 expr1) (cond2 expr2) ...)
      */
-    private static Object handleCond(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
+    private static AstNode handleCond(List<AstNode> argNodes, Evaluator evaluator, Map<String, Object> env) {
         for (AstNode clause : argNodes) {
             if (clause.getType() != AstNode.Type.LIST) {
                 throw new RuntimeException("Cada cláusula de cond debe ser una lista");
             }
+    
             List<AstNode> clauseElements = castToList(clause.getValue());
             if (clauseElements.isEmpty()) {
                 throw new RuntimeException("Cláusula cond vacía");
             }
+    
+            // Evaluar la condición correctamente
             Object condition = evaluator.eval(clauseElements.get(0), env).getValue();
-            if (condition != null && !condition.equals(false)) {
+            
+            // Considerar que en Lisp cualquier valor distinto de NIL (o false) es verdadero
+            boolean isTrue = !(condition == null || condition.equals(false) || condition.equals("false") || condition.equals(0));
+    
+            if (isTrue) {
                 if (clauseElements.size() == 1) {
-                    return condition;
+                    return new AstNode(AstNode.Type.NUMBER, condition);
                 } else {
-                    return evaluator.eval(clauseElements.get(1), env).getValue();
+                    return evaluator.eval(clauseElements.get(1), env);
                 }
             }
         }
-        return null;
+        return new AstNode(AstNode.Type.NUMBER, 0);
     }
+    
 
     @SuppressWarnings("unchecked")
     private static List<AstNode> castToList(Object value) {
