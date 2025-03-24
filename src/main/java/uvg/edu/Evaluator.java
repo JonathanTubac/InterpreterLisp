@@ -11,7 +11,6 @@ public class Evaluator {
 
     public Evaluator() {
         environment = new HashMap<>();
-        // Puedes agregar símbolos predefinidos aquí si es necesario
     }
 
     public AstNode eval(AstNode node) {
@@ -58,7 +57,7 @@ public class Evaluator {
                 
                 // Manejo de comandos especiales como setq, print, cond, defun
                 if (operator.equals("setq") || operator.equals("print") || operator.equals("cond") || operator.equals("defun")) {
-                    return new AstNode(AstNode.Type.NUMBER, LispCommands.evaluateCommand(operator, list.subList(1, list.size()), this, env));
+                    return LispCommands.evaluateCommand(operator, list.subList(1, list.size()), this, env);
                 }
 
                 // Manejo de funciones definidas por el usuario
@@ -66,18 +65,25 @@ public class Evaluator {
                     FunctionDefinition funcDef = (FunctionDefinition) env.get(operator);
                     List<String> parameters = funcDef.getParameters();
                     AstNode body = funcDef.getBody();
-                    Map<String, Object> closure = new HashMap<>(funcDef.getClosure());
-
+                    
+                    // Crear un nuevo entorno combinando el cierre con el entorno actual
+                    Map<String, Object> newEnv = new HashMap<>(env);
+                    newEnv.putAll(funcDef.getClosure());
+                
+                    // Si la función es recursiva, asegurarse de que se puede llamar a sí misma
+                    newEnv.put(operator, funcDef);
+                
                     if (list.size() - 1 != parameters.size()) {
                         throw new RuntimeException("Número incorrecto de argumentos para la función: " + operator);
                     }
-
+                
                     for (int i = 0; i < parameters.size(); i++) {
-                        closure.put(parameters.get(i), eval(list.get(i + 1), env).getValue());
+                        newEnv.put(parameters.get(i), eval(list.get(i + 1), env).getValue());
                     }
-
-                    return eval(body, closure);
+                
+                    return eval(body, newEnv);
                 }
+                
 
                 // Se evalúan los argumentos
                 List<Object> operands = new ArrayList<>();
@@ -110,6 +116,10 @@ public class Evaluator {
                 return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.lessThan(castToIntegerList(operands)) ? 1 : 0);
             case ">":
                 return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.greaterThan(castToIntegerList(operands)) ? 1 : 0);
+            case "<=":
+                return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.lessThanOrEqual(castToIntegerList(operands)) ? 1 : 0);
+            case ">=":
+                return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.greaterThanOrEqual(castToIntegerList(operands)) ? 1 : 0);
             case "and":
                 return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.and(castToBooleanList(operands)) ? 1 : 0);
             case "or":

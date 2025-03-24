@@ -83,6 +83,15 @@ public class BuiltInFunctions {
         }
         return operands.get(0) < operands.get(1);
     }
+    /**
+     * Compara si el primer operando es menor o igual que el segundo.
+     */
+    public static boolean lessThanOrEqual(List<Integer> operands) {
+        if (operands.size() != 2) {
+            throw new RuntimeException("La operación '<=' espera exactamente dos operandos");
+        }
+        return operands.get(0) <= operands.get(1);
+    }
 
     /**
      * Compara si el primer operando es mayor que el segundo.
@@ -93,6 +102,18 @@ public class BuiltInFunctions {
         }
         return operands.get(0) > operands.get(1);
     }
+
+    /**
+     * Compara si el primer operando es mayor o igual que el segundo.
+     */
+    public static boolean greaterThanOrEqual(List<Integer> operands) {
+        if (operands.size() != 2) {
+            throw new RuntimeException("La operación '>=' espera exactamente dos operandos");
+        }
+        return operands.get(0) >= operands.get(1);
+    }
+
+
 
     /**
      * Realiza una operación lógica AND sobre todos los operandos.

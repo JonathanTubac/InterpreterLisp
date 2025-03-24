@@ -25,7 +25,17 @@
     ((< x 0) "negativo")
     ( "Cero")))
 
-(print (clasificar-numero (+ negativo 3) ))
+(print (clasificar-numero (+ negativo 2) ))
 (print(- 3 10))
 (setq nombre "Diego")
 (print nombre) 
+
+
+(defun fibonacci (n)
+  (cond
+    ((= n 0) 0)
+    ((= n 1) 1)
+    ((+ (fibonacci (- n 1)) (fibonacci (- n 2))))))
+
+(print (fibonacci 10))
+(print (fibonacci 12))
