@@ -124,6 +124,22 @@ public class Evaluator {
                 return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.and(castToBooleanList(operands)) ? 1 : 0);
             case "or":
                 return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.or(castToBooleanList(operands)) ? 1 : 0);
+            case "atom":
+                return new AstNode(AstNode.Type.NUMBER, BuiltInFunctions.atom(operands.get(0)) ? 1 : 0);
+            case "list":
+                List<AstNode> listElements = new ArrayList<>();
+                for (Object operand : operands) {
+                    if (operand instanceof Integer) {
+                        listElements.add(new AstNode(AstNode.Type.NUMBER, operand));
+                    } else if (operand instanceof String) {
+                        listElements.add(new AstNode(AstNode.Type.STRING, operand));
+                    } else if (operand instanceof List) {
+                        listElements.add((AstNode) operand);
+                    } else {
+                        throw new RuntimeException("Tipo de operando no soportado para list: " + operand);
+                    }
+                }
+                return new AstNode(AstNode.Type.LIST, listElements);
             default:
                 throw new RuntimeException("Operador no soportado: " + operator);
         }

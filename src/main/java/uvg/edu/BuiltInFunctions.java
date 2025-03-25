@@ -138,4 +138,19 @@ public class BuiltInFunctions {
         }
         return false;
     }
+
+    /**
+     * Verifica si el operando es un átomo
+     */
+    public static boolean atom(Object operand) {
+        return !(operand instanceof List);
+    }
+
+    /**
+     * Verifica si el operando es una lista
+     */
+    public static List<Object> list(List<Object> operands) {
+        return operands;
+    }
+
 }
