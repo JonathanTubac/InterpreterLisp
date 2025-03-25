@@ -9,14 +9,30 @@ public class Evaluator {
 
     private Map<String, Object> environment;
 
+    /**
+     * Construye un Evaluador con un entorno vacío.
+     */
     public Evaluator() {
         environment = new HashMap<>();
     }
 
+    /**
+     * Evalúa un nodo AST usando el entorno predeterminado.
+     *
+     * @param node el nodo AST a evaluar
+     * @return el nodo AST evaluado
+     */
     public AstNode eval(AstNode node) {
         return eval(node, environment);
     }
 
+    /**
+     * Evalúa un nodo AST usando el entorno especificado.
+     *
+     * @param node el nodo AST a evaluar
+     * @param env el entorno a usar para la evaluación
+     * @return el nodo AST evaluado
+     */
     public AstNode eval(AstNode node, Map<String, Object> env) {
         switch (node.getType()) {
             case NUMBER:
@@ -47,14 +63,14 @@ public class Evaluator {
                 if (list.isEmpty()) {
                     throw new RuntimeException("No se puede evaluar una lista vacía");
                 }
-                
+
                 // El primer elemento debe ser un operador (símbolo).
                 AstNode first = list.get(0);
                 if (first.getType() != AstNode.Type.SYMBOL) {
                     throw new RuntimeException("El primer elemento de la lista debe ser un operador (símbolo)");
                 }
                 String operator = (String) first.getValue();
-                
+
                 // Manejo de comandos especiales como setq, print, cond, defun
                 if (operator.equals("setq") || operator.equals("print") || operator.equals("cond") || operator.equals("defun")) {
                     return LispCommands.evaluateCommand(operator, list.subList(1, list.size()), this, env);
@@ -65,25 +81,24 @@ public class Evaluator {
                     FunctionDefinition funcDef = (FunctionDefinition) env.get(operator);
                     List<String> parameters = funcDef.getParameters();
                     AstNode body = funcDef.getBody();
-                    
+
                     // Crear un nuevo entorno combinando el cierre con el entorno actual
                     Map<String, Object> newEnv = new HashMap<>(env);
                     newEnv.putAll(funcDef.getClosure());
-                
+
                     // Si la función es recursiva, asegurarse de que se puede llamar a sí misma
                     newEnv.put(operator, funcDef);
-                
+
                     if (list.size() - 1 != parameters.size()) {
                         throw new RuntimeException("Número incorrecto de argumentos para la función: " + operator);
                     }
-                
+
                     for (int i = 0; i < parameters.size(); i++) {
                         newEnv.put(parameters.get(i), eval(list.get(i + 1), env).getValue());
                     }
-                
+
                     return eval(body, newEnv);
                 }
-                
 
                 // Se evalúan los argumentos
                 List<Object> operands = new ArrayList<>();
@@ -99,6 +114,10 @@ public class Evaluator {
 
     /**
      * Aplica una operación incorporada (aritmética o lógica).
+     *
+     * @param operator el operador a aplicar
+     * @param operands los operandos a los que se aplicará el operador
+     * @return el resultado de aplicar el operador
      */
     private AstNode applyBuiltInFunction(String operator, List<Object> operands) {
         switch (operator) {
@@ -145,11 +164,24 @@ public class Evaluator {
         }
     }
 
+    /**
+     * Convierte un objeto a una lista de nodos AST.
+     *
+     * @param value el objeto a convertir
+     * @return la lista convertida de nodos AST
+     */
     @SuppressWarnings("unchecked")
     private List<AstNode> castToList(Object value) {
         return (List<AstNode>) value;
     }
 
+    /**
+     * Convierte una lista de objetos a una lista de enteros.
+     *
+     * @param operands la lista de objetos a convertir
+     * @return la lista convertida de enteros
+     * @throws RuntimeException si un operando no es un entero
+     */
     private List<Integer> castToIntegerList(List<Object> operands) {
         List<Integer> intList = new ArrayList<>();
         for (Object operand : operands) {
@@ -162,6 +194,13 @@ public class Evaluator {
         return intList;
     }
 
+    /**
+     * Convierte una lista de objetos a una lista de booleanos.
+     *
+     * @param operands la lista de objetos a convertir
+     * @return la lista convertida de booleanos
+     * @throws RuntimeException si un operando no es un booleano
+     */
     private List<Boolean> castToBooleanList(List<Object> operands) {
         List<Boolean> boolList = new ArrayList<>();
         for (Object operand : operands) {
@@ -174,4 +213,3 @@ public class Evaluator {
         return boolList;
     }
 }
-
