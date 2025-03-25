@@ -39,3 +39,10 @@
 
 (print (fibonacci 10))
 (print (fibonacci 12))
+
+(print (atom 10))
+(print (atom "hola"))
+
+(print (atom(list 1 2 3 4 5)))
+
+(print (list 1 2 3 4 5))
