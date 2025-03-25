@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="uvg.edu.TestLisp" time="0.048" tests="13" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="uvg.edu.TestLisp" time="0.941" tests="18" errors="0" skipped="0" failures="0">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
     <property name="java.specification.version" value="11"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\javie\OneDrive\Escritorio\InterpreterLisp\target\test-classes;C:\Users\javie\OneDrive\Escritorio\InterpreterLisp\target\classes;C:\Users\javie\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar;C:\Users\javie\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\javie\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar;C:\Users\javie\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\javie\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar;C:\Users\javie\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar;"/>
+    <property name="java.class.path" value="C:\Users\javie\OneDrive\Escritorio\InterpreterLisp\target\test-classes;C:\Users\javie\OneDrive\Escritorio\InterpreterLisp\target\classes;C:\Users\javie\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar;C:\Users\javie\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\javie\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar;C:\Users\javie\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\javie\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar;C:\Users\javie\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar;C:\Users\javie\.m2\repository\org\mockito\mockito-core\5.5.0\mockito-core-5.5.0.jar;C:\Users\javie\.m2\repository\net\bytebuddy\byte-buddy\1.14.6\byte-buddy-1.14.6.jar;C:\Users\javie\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.6\byte-buddy-agent-1.14.6.jar;C:\Users\javie\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -17,9 +17,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-11\bin"/>
-    <property name="sun.java.command" value="C:\Users\javie\AppData\Local\Temp\surefire4932842899276946905\surefirebooter-20250324223619965_3.jar C:\Users\javie\AppData\Local\Temp\surefire4932842899276946905 2025-03-24T22-36-19_154-jvmRun1 surefire-20250324223619965_1tmp surefire_0-20250324223619965_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\javie\AppData\Local\Temp\surefire10177022468201388884\surefirebooter-20250324225545015_3.jar C:\Users\javie\AppData\Local\Temp\surefire10177022468201388884 2025-03-24T22-55-44_846-jvmRun1 surefire-20250324225545015_1tmp surefire_0-20250324225545015_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Users\javie\OneDrive\Escritorio\InterpreterLisp\target\test-classes;C:\Users\javie\OneDrive\Escritorio\InterpreterLisp\target\classes;C:\Users\javie\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar;C:\Users\javie\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\javie\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar;C:\Users\javie\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\javie\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar;C:\Users\javie\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Users\javie\OneDrive\Escritorio\InterpreterLisp\target\test-classes;C:\Users\javie\OneDrive\Escritorio\InterpreterLisp\target\classes;C:\Users\javie\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.2\junit-jupiter-api-5.9.2.jar;C:\Users\javie\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\javie\.m2\repository\org\junit\platform\junit-platform-commons\1.9.2\junit-platform-commons-1.9.2.jar;C:\Users\javie\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\javie\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.2\junit-jupiter-engine-5.9.2.jar;C:\Users\javie\.m2\repository\org\junit\platform\junit-platform-engine\1.9.2\junit-platform-engine-1.9.2.jar;C:\Users\javie\.m2\repository\org\mockito\mockito-core\5.5.0\mockito-core-5.5.0.jar;C:\Users\javie\.m2\repository\net\bytebuddy\byte-buddy\1.14.6\byte-buddy-1.14.6.jar;C:\Users\javie\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.6\byte-buddy-agent-1.14.6.jar;C:\Users\javie\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\javie"/>
     <property name="user.language" value="en"/>
@@ -33,7 +33,7 @@
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="surefire.real.class.path" value="C:\Users\javie\AppData\Local\Temp\surefire4932842899276946905\surefirebooter-20250324223619965_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\javie\AppData\Local\Temp\surefire10177022468201388884\surefirebooter-20250324225545015_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="11.0.25+9-LTS-256"/>
@@ -61,17 +61,25 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="55.0"/>
   </properties>
-  <testcase name="testGreaterThanOrEqual" classname="uvg.edu.TestLisp" time="0.019"/>
-  <testcase name="testLessThanOrEqual" classname="uvg.edu.TestLisp" time="0.0"/>
-  <testcase name="testLessThan" classname="uvg.edu.TestLisp" time="0.001"/>
-  <testcase name="testAdd" classname="uvg.edu.TestLisp" time="0.001"/>
-  <testcase name="testAnd" classname="uvg.edu.TestLisp" time="0.0"/>
+  <testcase name="testGreaterThanOrEqual" classname="uvg.edu.TestLisp" time="0.856"/>
+  <testcase name="testLessThanOrEqual" classname="uvg.edu.TestLisp" time="0.002"/>
+  <testcase name="testLessThan" classname="uvg.edu.TestLisp" time="0.002"/>
+  <testcase name="testAdd" classname="uvg.edu.TestLisp" time="0.002"/>
+  <testcase name="testAnd" classname="uvg.edu.TestLisp" time="0.001"/>
   <testcase name="testSubtract" classname="uvg.edu.TestLisp" time="0.001"/>
+  <testcase name="testUnknownCommand" classname="uvg.edu.TestLisp" time="0.002"/>
+  <testcase name="testDefun" classname="uvg.edu.TestLisp" time="0.002"/>
+  <testcase name="testPrint" classname="uvg.edu.TestLisp" time="0.026">
+    <system-out><![CDATA[Hello, World!
+]]></system-out>
+  </testcase>
   <testcase name="testAtom" classname="uvg.edu.TestLisp" time="0.001"/>
+  <testcase name="testCond" classname="uvg.edu.TestLisp" time="0.002"/>
   <testcase name="testList" classname="uvg.edu.TestLisp" time="0.001"/>
+  <testcase name="testSetq" classname="uvg.edu.TestLisp" time="0.001"/>
   <testcase name="testOr" classname="uvg.edu.TestLisp" time="0.001"/>
   <testcase name="testGreaterThan" classname="uvg.edu.TestLisp" time="0.001"/>
-  <testcase name="testDivide" classname="uvg.edu.TestLisp" time="0.001"/>
+  <testcase name="testDivide" classname="uvg.edu.TestLisp" time="0.002"/>
   <testcase name="testEquals" classname="uvg.edu.TestLisp" time="0.001"/>
-  <testcase name="testMultiply" classname="uvg.edu.TestLisp" time="0.001"/>
+  <testcase name="testMultiply" classname="uvg.edu.TestLisp" time="0.0"/>
 </testsuite>

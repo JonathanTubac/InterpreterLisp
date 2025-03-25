@@ -7,8 +7,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import static org.mockito.Mockito.*;
+import org.mockito.Mockito;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestLisp {
@@ -96,5 +101,88 @@ public class TestLisp {
     void testList() {
         List<Object> input = Arrays.asList(1, 2, 3);
         assertEquals(input, BuiltInFunctions.list(input));
+    }
+
+    //tests para la clase LispCommands
+
+    private Evaluator evaluator;
+    private Map<String, Object> env;
+
+    @BeforeEach
+    void setUp() {
+        evaluator = mock(Evaluator.class);
+        env = new HashMap<>();
+    }
+
+    @Test
+    void testDefun() {
+        AstNode nameNode = new AstNode(AstNode.Type.SYMBOL, "myFunc");
+        AstNode paramsNode = new AstNode(AstNode.Type.LIST, Arrays.asList(
+                new AstNode(AstNode.Type.SYMBOL, "x"),
+                new AstNode(AstNode.Type.SYMBOL, "y")
+        ));
+        AstNode bodyNode = new AstNode(AstNode.Type.NUMBER, 42);
+        List<AstNode> argNodes = Arrays.asList(nameNode, paramsNode, bodyNode);
+
+        AstNode result = LispCommands.evaluateCommand("defun", argNodes, evaluator, env);
+
+        assertEquals("myFunc", result.getValue());
+        assertTrue(env.containsKey("myFunc"));
+        assertTrue(env.get("myFunc") instanceof FunctionDefinition);
+    }
+
+    @Test
+    void testSetq() {
+        AstNode varNode = new AstNode(AstNode.Type.SYMBOL, "x");
+        AstNode valueNode = new AstNode(AstNode.Type.NUMBER, 10);
+        List<AstNode> argNodes = Arrays.asList(varNode, valueNode);
+
+        when(evaluator.eval(valueNode, env)).thenReturn(new AstNode(AstNode.Type.NUMBER, 10));
+
+        AstNode result = LispCommands.evaluateCommand("setq", argNodes, evaluator, env);
+
+        assertEquals("x", result.getValue());
+        assertEquals(10, env.get("x"));
+    }
+
+    @Test
+    void testPrint() {
+        AstNode valueNode = new AstNode(AstNode.Type.STRING, "Hello, World!");
+        List<AstNode> argNodes = Collections.singletonList(valueNode);
+
+        when(evaluator.eval(valueNode, env)).thenReturn(new AstNode(AstNode.Type.STRING, "Hello, World!"));
+
+        AstNode result = LispCommands.evaluateCommand("print", argNodes, evaluator, env);
+
+        assertEquals("Hello, World!", result.getValue());
+    }
+
+    @Test
+    void testCond() {
+        AstNode condition1 = new AstNode(AstNode.Type.NUMBER, 0);
+        AstNode expr1 = new AstNode(AstNode.Type.STRING, "False branch");
+        AstNode clause1 = new AstNode(AstNode.Type.LIST, Arrays.asList(condition1, expr1));
+
+        AstNode condition2 = new AstNode(AstNode.Type.NUMBER, 1);
+        AstNode expr2 = new AstNode(AstNode.Type.STRING, "True branch");
+        AstNode clause2 = new AstNode(AstNode.Type.LIST, Arrays.asList(condition2, expr2));
+
+        List<AstNode> argNodes = Arrays.asList(clause1, clause2);
+
+        when(evaluator.eval(condition1, env)).thenReturn(new AstNode(AstNode.Type.NUMBER, 0));
+        when(evaluator.eval(condition2, env)).thenReturn(new AstNode(AstNode.Type.NUMBER, 1));
+        when(evaluator.eval(expr2, env)).thenReturn(new AstNode(AstNode.Type.STRING, "True branch"));
+
+        AstNode result = LispCommands.evaluateCommand("cond", argNodes, evaluator, env);
+
+        assertEquals("True branch", result.getValue());
+    }
+
+    @Test
+    void testUnknownCommand() {
+        List<AstNode> argNodes = Collections.emptyList();
+        RuntimeException exception = assertThrows(RuntimeException.class, () ->
+                LispCommands.evaluateCommand("unknown", argNodes, evaluator, env));
+        assertEquals("Comando desconocido: unknown", exception.getMessage());
     }
 }
